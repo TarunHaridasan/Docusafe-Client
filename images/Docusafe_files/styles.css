@@ -1,0 +1,33 @@
+* {
+    font-family: Calibri;
+}
+#header {
+    position: relative;
+    height: 10%;
+}
+#logo {
+    position: relative;
+   height: 100%;
+}
+@media print {
+    html, body {
+       display: none;  /* hide whole page */
+    }
+}
+body {
+    height: 100vh;
+}
+#content {
+    height: 90%;
+}
+#document {
+    margin: 2% 0;
+    font-size: 2em;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+#document:hover {
+    transition: all 0.1s;
+    font-size: 2.1em
+}
