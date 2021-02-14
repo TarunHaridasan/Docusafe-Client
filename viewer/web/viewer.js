@@ -1372,6 +1372,18 @@ const PDFViewerApplication = {
     this.documentInfo = info;
     this.metadata = metadata;
     this.contentDispositionFilename = contentDispositionFilename;
+    $(document).ready(function(){
+      $(window).keyup(function(key) {
+          if (key.which==44) {
+              document.execCommand("copy");
+          }
+      })
+      document.addEventListener('copy', function(e) {
+          console.log("Copied")
+          e.clipboardData.setData('text', "Copy is restricted")
+          e.preventDefault();
+      });
+    });
     console.log(`PDF ${pdfDocument.fingerprint} [${info.PDFFormatVersion} ` + `${(info.Producer || "-").trim()} / ${(info.Creator || "-").trim()}] ` + `(PDF.js: ${_pdfjsLib.version || "-"}` + `${this.pdfViewer.enableWebGL ? " [WebGL]" : ""})`);
     let pdfTitle;
     const infoTitle = info && info.Title;
@@ -13900,6 +13912,7 @@ _app.PDFPrintServiceFactory.instance = {
   }
 
 };
+
 
 /***/ })
 /******/ ]);

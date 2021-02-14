@@ -1,7 +1,4 @@
-let server = "http://127.0.0.1:5000/";
-server = "https://www.codetrinkets.ca:1222";
-
-//Get the fingerprint of the browser
+//Get the fingerprint of the browser client
 function getFingerprint() {
     return new Promise(function(fulfill, reject) {
         biri()
@@ -13,19 +10,6 @@ function getFingerprint() {
         })
     });
 }
-//Retrieve data associated with the fingerprint from the server
-function retrieveFingerprintData(fingerprint) {
-    return new Promise(function (fulfill, reject){
-        fetch(`${server}/retrieveData/${fingerprint}`)
-        .then(resp => {
-            fulfill(resp.json());
-        })
-        .catch(err=> {
-            reject(err);
-        })
-    });    
-}
-
 //Print catalogue
 function print(data) {
     for (i=0; i<data.documents.length; i++) {
@@ -37,27 +21,33 @@ function print(data) {
         reqDoc(this.id)
     });
 }
-
-//Redeem a key
-async function redeemKey(key) {
-    fingerprint = localStorage.getItem("fingerprint")
-    fetch(`${server}/redeemKey/${fingerprint}/${key}`)
-    .then(resp=> {
-        location.reload()
-    })    
+//Retrieve data associated with the fingerprint from the server
+function retrieveData(fingerprint) {
+    return new Promise(function (fulfill, reject){
+        $.post("./PHP/retrieveData.php", {"fingerprint": fingerprint}, function(data) {
+            fulfill(data);
+        }, "json");
+    });    
 }
-
+//Redeem a key under a fingerprint
+function redeemKey(key) {
+    fingerprint = localStorage.getItem("fingerprint");
+    $.post("./PHP/redeemKey.php", {"key": key, "fingerprint": fingerprint}, function(data) {
+        console.log(data);
+        location.reload()
+    }, "json");
+}
 //Request a document
 async function reqDoc(docName) {
-    fingerprint = localStorage.getItem("fingerprint") ///viewer/web/viewer.html?file=http://127.0.0.1:5000/retrieveDocument/1234/ATS
-    $("#pdfBox").attr("src", `./viewer/web/viewer.html?file=${server}/retrieveDocument/${fingerprint}/${docName}`) //?
+    fingerprint = localStorage.getItem("fingerprint")
+    $.post("./PHP/requestDoc.php", {"fingerprint": fingerprint, "docName": docName}, function(data){
+        $("#pdfBox").attr("src", data);
+    });    
 }
-
 //Event Listners
 $(document).ready(function(){
     $("#btnSubmit").click(function(){
         key = $("#keyBox").val()
-        console.log(key)
         if (!key) {
             return alert("No key entered")
         }
@@ -74,18 +64,13 @@ $(document).ready(function(){
         e.preventDefault();
     });
 });
-
 //Main function
 async function main() {
     fingerprint = await getFingerprint()
-    console.log(fingerprint)
-    localStorage.setItem("fingerprint", fingerprint)
-    data = await retrieveFingerprintData(fingerprint)
-    console.log(data)
+    localStorage.setItem("fingerprint", fingerprint);
+    data = await retrieveData(fingerprint);
     print(data)
 }
-
 //Main Code
 main()
-
 
