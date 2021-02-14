@@ -1,5 +1,5 @@
 let server = "http://127.0.0.1:5000/";
-server = "https://codetrinkets.ca:1222/";
+server = "https://www.codetrinkets.ca:1222";
 
 //Get the fingerprint of the browser
 function getFingerprint() {
@@ -42,13 +42,15 @@ function print(data) {
 async function redeemKey(key) {
     fingerprint = localStorage.getItem("fingerprint")
     fetch(`${server}/redeemKey/${fingerprint}/${key}`)
-    location.reload()
+    .then(resp=> {
+        location.reload()
+    })    
 }
 
 //Request a document
 async function reqDoc(docName) {
     fingerprint = localStorage.getItem("fingerprint") ///viewer/web/viewer.html?file=http://127.0.0.1:5000/retrieveDocument/1234/ATS
-    $("#pdfBox").attr("src", `/Viewer/web/viewer.html?file=${server}/retrieveDocument/${fingerprint}/${docName}`)
+    $("#pdfBox").attr("src", `./viewer/web/viewer.html?file=${server}/retrieveDocument/${fingerprint}/${docName}`) //?
 }
 
 //Event Listners
