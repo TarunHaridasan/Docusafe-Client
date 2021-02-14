@@ -1353,7 +1353,7 @@ const PDFViewerApplication = {
 
     if (triggerAutoPrint) {
       setTimeout(function () {
-        window.print();
+        //window.print();
       });
     }
   },
@@ -1699,7 +1699,7 @@ const PDFViewerApplication = {
 
     eventBus._on("presentationmode", webViewerPresentationMode);
 
-    eventBus._on("print", webViewerPrint);
+    //eventBus._on("print", webViewerPrint);
 
     eventBus._on("download", webViewerDownload);
 
@@ -1833,7 +1833,7 @@ const PDFViewerApplication = {
 
     eventBus._off("presentationmode", webViewerPresentationMode);
 
-    eventBus._off("print", webViewerPrint);
+    //eventBus._off("print", webViewerPrint);
 
     eventBus._off("download", webViewerDownload);
 
@@ -2195,7 +2195,7 @@ function webViewerNamedAction(evt) {
 
     case "Print":
       if (PDFViewerApplication.supportsPrinting) {
-        webViewerPrint();
+        //webViewerPrint();
       }
 
       break;
@@ -2350,9 +2350,11 @@ function webViewerPresentationMode() {
   PDFViewerApplication.requestPresentationMode();
 }
 
+/*
 function webViewerPrint() {
-  window.print();
+  //window.print();
 }
+*/
 
 function webViewerDownloadOrSave(sourceEventType) {
   if (PDFViewerApplication.pdfDocument && PDFViewerApplication.pdfDocument.annotationStorage.size > 0) {
@@ -13794,8 +13796,8 @@ PDFPrintService.prototype = {
   }
 
 };
+/*
 const print = window.print;
-
 window.print = function () {
   if (activeService) {
     console.warn("Ignored window.print() because of a pending print job.");
@@ -13831,7 +13833,7 @@ window.print = function () {
     });
   }
 };
-
+*/
 function dispatchEvent(eventType) {
   const event = document.createEvent("CustomEvent");
   event.initCustomEvent(eventType, false, false, "custom");
@@ -13860,7 +13862,7 @@ function renderProgress(index, total, l10n) {
 
 window.addEventListener("keydown", function (event) {
   if (event.keyCode === 80 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
-    window.print();
+    //window.print();
     event.preventDefault();
 
     if (event.stopImmediatePropagation) {
